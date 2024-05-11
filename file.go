@@ -7,6 +7,10 @@ import (
 	"strings"
 )
 
+/**
+ * Affiche le contenu du fichier donner en paramètre
+ * @params file: string
+ */
 func readFile(file string) {
 	data, err := os.ReadFile(file)
 	if err != nil {
@@ -21,6 +25,10 @@ func readFile(file string) {
 	fmt.Println(string(data))
 }
 
+/**
+ * Crée le fichier donner en paramètre
+ * @params create: string
+ */
 func createFile(create string) {
 	file, err := os.Create(create)
 
@@ -100,4 +108,26 @@ func renameFile(file string, newName string) {
 	}
 
 	fmt.Println("Fichier renommée")
+}
+
+func copyFile(file string, newFile string) {
+	read, err := os.ReadFile(file)
+	if err != nil {
+		if os.IsNotExist(err) {
+			log.Fatal("Le fichier n'existe pas ", err)
+		} else {
+			log.Fatal("Erreur de lecture du fichier ", err)
+		}
+	}
+
+	error := os.WriteFile(newFile, read, 0600)
+	if error != nil {
+		if os.IsNotExist(error) {
+			log.Fatal("Le nouveau fichier n'existe pas ", err)
+		} else {
+			log.Fatal("Erreur d'écriture dans le nouveau fichier ", err)
+		}
+	}
+
+	fmt.Println("Le contenu à été copié")
 }
